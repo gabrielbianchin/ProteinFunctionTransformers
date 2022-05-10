@@ -23,7 +23,7 @@ X_test, y_test, positions_test = generate_data(test)
 ontologies_names = test.columns[2:].values
 
 # training model
-train_and_save_model(model_name='bert-base-uncased', MAX_LEN=100, ontologies_names=ontologies_names, path='../../utils/preprocessed/bert-base-uncased')
+train_and_save_model(model_name='bert-base-uncased', MAX_LEN=100, ontologies_names=ontologies_names, path='../../weights/preprocessed/bert-base-uncased')
 
 # predicting
 model_name = 'bert-base-uncased'
@@ -31,7 +31,7 @@ t = text.Transformer(model_name, maxlen=100, classes=ontologies_names)
 trn = t.preprocess_train(X_train, y_train)
 val = t.preprocess_test(X_val, y_val)
 model = t.get_classifier()
-model.load_weights('../../utils/preprocessed/bert-base-uncased/weights-xx.hdf5') # change the weights
+model.load_weights('../../weights/preprocessed/bert-base-uncased/weights-xx.hdf5') # change the weights
 learner = ktrain.get_learner(model, train_data=trn, val_data=val, batch_size=16)
 predictor = ktrain.get_predictor(learner.model, preproc=t)
 predict = predictor.predict_proba(X_val)
