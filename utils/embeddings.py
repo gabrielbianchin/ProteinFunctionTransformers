@@ -53,10 +53,10 @@ def save_embeddings_and_y_merged(model_name_short, X, y, positions, model, token
     emb_merged, y_merged = merge_embeddings(X, y, positions, 'avg', model, tokenizer)
     
     # save embeddings and y_merged
-    with open('../../embeddings/' + model_name_short + '/embedding_merged_' + set_name + '.npy', 'wb') as f:
+    with open('../embeddings/' + model_name_short + '/embedding_merged_' + set_name + '.npy', 'wb') as f:
         np.save(f, emb_merged)
         
-    with open('../../y_merged/y_merged_' + set_name + '.npy', 'wb') as f:
+    with open('../y_merged/y_merged_' + set_name + '.npy', 'wb') as f:
         np.save(f, y_merged)
     
 def generate_embeddings(model_name, model_name_short):
