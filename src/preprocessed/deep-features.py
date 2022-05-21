@@ -18,11 +18,10 @@ train = pd.read_csv(path + 'train.csv')
 val = pd.read_csv(path + 'val.csv')
 test = pd.read_csv(path + 'test.csv')
 
-# getting training, validation and testing features
-X_train, y_train, positions_train = generate_data(train)
-X_val, y_val, positions_val = generate_data(val)
-X_test, y_test, positions_test = generate_data(test)
+# getting training and validation features
 ontologies_names = test.columns[2:].values
+y_val_merged = np.load('../../y_merged/y_merged_val.npy')
+y_test_merged = np.load('../../y_merged/y_merged_test.npy')
 
 # load embeddings
 emb_prot_bert_merged_train = np.load('../../embeddings/prot_bert/embedding_merged_train.npy')
@@ -35,7 +34,7 @@ embeddings_train = np.concatenate((emb_prot_bert_merged_train, emb_prot_bert_bfd
 embeddings_val = np.concatenate((emb_prot_bert_merged_val, emb_prot_bert_bfd_merged_val), axis=1)
 
 # predict
-predict = cria_e_treina_mlp(embeddings_train, y_train, (embeddings_val, y_val), 1000, 3, '../../deep_features/concat_merged_1000_3')
+predict = cria_e_treina_mlp(embeddings_train, y_train_merged, (embeddings_val, y_val_merged), 1000, 3, '../../deep_features/concat_merged_1000_3')
 
 # evaluate
-evaluate(predict, y_val)
+evaluate(predict, y_val_merged)
