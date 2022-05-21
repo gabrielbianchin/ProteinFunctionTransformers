@@ -1,4 +1,4 @@
-!pip install ktrain
+#make sure you have ktrain: !pip install ktrain
 import pandas as pd
 import numpy as np
 import ktrain
@@ -25,23 +25,21 @@ X_test, y_test, positions_test = generate_data(test)
 ontologies_names = test.columns[2:].values
 
 # predict with ProtBertBfd
-model_name = 'Rostlab/prot_bert_bfd'
-t = text.Transformer(model_name, maxlen=100, classes=ontologies_names)
+t = text.Transformer('Rostlab/prot_bert_bfd', maxlen=100, classes=ontologies_names)
 trn = t.preprocess_train(X_train, y_train)
 val = t.preprocess_test(X_val, y_val)
 model = t.get_classifier()
-model.load_weights('../../weights/prot_bert_bfd.hdf5')
+model.load_weights('../../weights/preprocessed/prot_bert_bfd/weights-xx.hdf5') # change the weights
 learner = ktrain.get_learner(model, train_data=trn, val_data=val, batch_size=16)
 predictor = ktrain.get_predictor(learner.model, preproc=t)
 predict_prot_bert_bfd = predictor.predict_proba(X_val)
 
 # predict with ProtBert
-model_name = 'Rostlab/prot_bert'
-t = text.Transformer(model_name, maxlen=100, classes=ontologies_names)
+t = text.Transformer('Rostlab/prot_bert', maxlen=100, classes=ontologies_names)
 trn = t.preprocess_train(X_train, y_train)
 val = t.preprocess_test(X_val, y_val)
 model = t.get_classifier()
-model.load_weights('../../weights/prot_bert.hdf5')
+model.load_weights('../../weights/preprocessed/prot_bert/weights-xx.hdf5') # change the weights
 learner = ktrain.get_learner(model, train_data=trn, val_data=val, batch_size=16)
 predictor = ktrain.get_predictor(learner.model, preproc=t)
 predict_prot_bert = predictor.predict_proba(X_val)
@@ -51,7 +49,7 @@ predict_prot_bert_bfd_avg, y_val_merged = merge_predictions(predict_prot_bert_bf
 predict_prot_bert_avg, y_val_merged = merge_predictions(predict_prot_bert, y_val, positions_val, 'avg')
 
 # ensemble
-predictions_avg = np.mean( np.array([ predict_prot_bert_bfd_avg, predict_prot_bert_avg ]), axis=0 )
+predictions_avg = np.mean(np.array([ predict_prot_bert_bfd_avg, predict_prot_bert_avg ]), axis=0)
 predictions_max = np.maximum(predict_prot_bert_bfd_avg, predict_prot_bert_avg)
 predictions_min = np.minimum(predict_prot_bert_bfd_avg, predict_prot_bert_avg)
 
