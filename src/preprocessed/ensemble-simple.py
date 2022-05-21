@@ -8,7 +8,6 @@ path = '../../datasets/preprocessed/'
 
 exec(open('../../utils/utils.py').read())
 exec(open('../../utils/evaluate.py').read())
-exec(open('../../utils/predictions.py').read())
 
 # getting the ontology
 ontology = generate_ontology('../../utils/go.obo', specific_space=True, name_specific_space='molecular_function')
