@@ -3,7 +3,7 @@ import numpy as np
 import ktrain
 from ktrain import text
 
-path = '../../datasets/preprocessed/'
+path = '../../datasets/original/'
 
 exec(open('../../utils/utils.py').read())
 exec(open('../../utils/evaluate.py').read())
@@ -23,15 +23,15 @@ X_test, y_test, positions_test = generate_data(test)
 ontologies_names = test.columns[2:].values
 
 # training model
-train_and_save_model(model_name='Rostlab/prot_bert_bfd', MAX_LEN=100, ontologies_names=ontologies_names, path='../../weights/preprocessed/prot_bert_bfd')
+train_and_save_model(model_name='Rostlab/prot_bert', MAX_LEN=100, ontologies_names=ontologies_names, path='../../weights/original/prot_bert')
 
 # predicting
-model_name = 'Rostlab/prot_bert_bfd'
+model_name = 'Rostlab/prot_bert'
 t = text.Transformer(model_name, maxlen=100, classes=ontologies_names)
 trn = t.preprocess_train(X_train, y_train)
 val = t.preprocess_test(X_val, y_val)
 model = t.get_classifier()
-model.load_weights('../../weights/preprocessed/prot_bert_bfd/weights-xx.hdf5') # change the weights
+model.load_weights('../../weights/original/prot_bert/weights-xx.hdf5') # change the weights
 learner = ktrain.get_learner(model, train_data=trn, val_data=val, batch_size=16)
 predictor = ktrain.get_predictor(learner.model, preproc=t)
 predict = predictor.predict_proba(X_test)

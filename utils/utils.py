@@ -133,11 +133,11 @@ def create_prediction(cur_pred, mode):
   return prediction.tolist()
 
 
-def merge_predictions(predictions, y_val, positions, mode):
+def merge_predictions(predictions, y, positions, mode):
   merged_predictions = []
   last_pos = positions[0]
   cur_pred = []
-  y_val_merged = [y_val[0]]
+  y_merged = [y[0]]
     
   for i in range(len(predictions)):
     cur_pos = positions[i]
@@ -147,8 +147,8 @@ def merge_predictions(predictions, y_val, positions, mode):
       merged_predictions.append(create_prediction(cur_pred, mode))
       last_pos = cur_pos
       cur_pred = [predictions[i]]
-      y_val_merged.append(y_val[i])
+      y_merged.append(y[i])
 
   merged_predictions.append(create_prediction(cur_pred, mode))
     
-  return merged_predictions, y_val_merged
+  return merged_predictions, y_merged

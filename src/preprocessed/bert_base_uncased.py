@@ -34,8 +34,8 @@ model = t.get_classifier()
 model.load_weights('../../weights/preprocessed/bert-base-uncased/weights-xx.hdf5') # change the weights
 learner = ktrain.get_learner(model, train_data=trn, val_data=val, batch_size=16)
 predictor = ktrain.get_predictor(learner.model, preproc=t)
-predict = predictor.predict_proba(X_val)
+predict = predictor.predict_proba(X_test)
 
 # merging predictions
-predictions_avg, y_val_merged = merge_predictions(predict, y_val, positions_val, 'avg')
-evaluate(predictions_avg, y_val_merged)
+predictions_avg, y_merged = merge_predictions(predict, y_test, positions_test, 'avg')
+evaluate(predictions_avg, y_merged)

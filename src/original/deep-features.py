@@ -5,7 +5,7 @@ import numpy as np
 import ktrain
 from ktrain import text
 
-path = '../../datasets/preprocessed/'
+path = '../../datasets/original/'
 
 exec(open('../../utils/utils.py').read())
 exec(open('../../utils/evaluate.py').read())
